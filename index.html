@@ -174,6 +174,7 @@
       display: flex;
       gap: 20px;
       list-style: none;
+      align-items: center;
     }
 
     .nav-links a {
@@ -189,6 +190,7 @@
       align-items: center;
       gap: 8px;
       transition: all 0.2s ease;
+      white-space: nowrap;
     }
 
     .nav-links a:hover, .nav-links a.active {
@@ -196,6 +198,51 @@
       background-color: var(--accent-yellow);
       border-color: var(--outline);
       box-shadow: 3px 3px 0px var(--outline);
+    }
+
+    /* Mobile Hamburger Toggle Button */
+    .mobile-nav-toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      width: 42px;
+      height: 42px;
+      background: var(--accent-yellow);
+      border: 2.5px solid var(--outline);
+      box-shadow: 3px 3px 0px var(--outline);
+      border-radius: 6px;
+      cursor: pointer;
+      padding: 0;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+      z-index: 1001;
+    }
+
+    .mobile-nav-toggle:hover {
+      transform: translateY(-2px);
+      box-shadow: 4px 4px 0px var(--outline);
+      background: #F39C12;
+    }
+
+    .mobile-nav-toggle .bar {
+      display: block;
+      width: 20px;
+      height: 2.5px;
+      background: #1A1A1A;
+      border-radius: 2px;
+      transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
+    }
+
+    .mobile-nav-toggle.open .bar-1 {
+      transform: translateY(7.5px) rotate(45deg);
+    }
+    .mobile-nav-toggle.open .bar-2 {
+      opacity: 0;
+      transform: scaleX(0);
+    }
+    .mobile-nav-toggle.open .bar-3 {
+      transform: translateY(-7.5px) rotate(-45deg);
     }
 
     /* Section flash frame effect */
@@ -220,7 +267,7 @@
       position: relative;
       min-height: 100vh;
       width: 100%;
-      padding: 100px 40px 70px 40px;
+      padding: 100px 30px 70px 30px;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -253,21 +300,25 @@
 
     .section-title {
       font-family: 'Georgia', serif;
-      font-size: 3.2rem;
+      font-size: clamp(1.8rem, 4.5vw, 3.2rem);
       font-weight: 900;
       color: #FFFDF0;
       text-transform: uppercase;
       letter-spacing: 0.5px;
       margin-bottom: 24px;
       text-shadow: 3px 3px 0px #1A1A1A, 0 0 15px rgba(0, 0, 0, 0.8);
+      word-break: break-word;
     }
 
     .section-desc {
-      font-size: 1.15rem;
+      font-size: clamp(0.95rem, 2.2vw, 1.15rem);
       font-weight: 700;
       color: #F5F5F5;
       text-shadow: 1.5px 1.5px 2px #000;
       margin-bottom: 30px;
+      max-width: 760px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     /* Buttons */
@@ -314,13 +365,16 @@
     /* Profile Photo Styling */
     .profile-photo-container {
       position: relative;
-      width: 320px;
-      height: 380px;
+      width: 100%;
+      max-width: 320px;
+      height: auto;
+      aspect-ratio: 320 / 380;
       border: 4px solid var(--outline);
       box-shadow: 6px 6px 0px var(--outline);
       border-radius: 12px;
       overflow: hidden;
       background: #FFFDF0;
+      margin: 0 auto;
     }
 
     .profile-photo {
@@ -1546,12 +1600,116 @@
     }
 
     /* ==========================================================================
-       RESPONSIVE BREAKPOINTS
+       RESPONSIVE BREAKPOINTS & MOBILE NAVIGATION
        ========================================================================== */
-    @media (max-width: 900px) {
+
+    /* Tablet & Medium Screens */
+    @media (max-width: 960px) {
+      .first-frame-grid {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        gap: 24px;
+      }
+      .hero-about-card {
+        text-align: center;
+        padding: 24px 20px;
+        width: 100%;
+      }
+      .hero-title-box {
+        text-align: center !important;
+      }
+      .hero-title {
+        justify-content: center !important;
+        text-align: center;
+      }
+      .hero-subtitle-box {
+        justify-content: center;
+      }
+      .about-lead {
+        text-align: left;
+      }
+      .hero-cta-group {
+        justify-content: center !important;
+      }
       .about-grid, .contact-container {
         grid-template-columns: 1fr;
       }
+      .project-grid-cards {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Mobile Breakpoint: Hamburger Menu & Reflows */
+    @media (max-width: 860px) {
+      #mainNav {
+        padding: 0 18px;
+        height: 60px;
+      }
+      #mainNav.condensed {
+        height: 52px;
+        padding: 0 16px;
+      }
+      .mobile-nav-toggle {
+        display: flex;
+      }
+      .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: rgba(18, 18, 48, 0.98);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border-bottom: 3.5px solid var(--outline);
+        box-shadow: 0 14px 28px rgba(0, 0, 0, 0.65);
+        flex-direction: column;
+        gap: 6px;
+        padding: 0 18px;
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        pointer-events: none;
+        transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease, padding 0.3s ease;
+      }
+      .nav-links.open {
+        max-height: 520px;
+        opacity: 1;
+        padding: 16px 18px 20px 18px;
+        pointer-events: auto;
+      }
+      .nav-links li {
+        width: 100%;
+      }
+      .nav-links a {
+        width: 100%;
+        padding: 10px 14px;
+        font-size: 0.92rem;
+        border-radius: 6px;
+        justify-content: flex-start;
+      }
+      .nav-links .nav-cv-btn {
+        width: 100%;
+        justify-content: center;
+        margin-top: 8px;
+        padding: 11px 16px;
+        font-size: 0.92rem;
+      }
+
+      /* Sections & Padding */
+      section {
+        padding: 85px 18px 50px 18px;
+        min-height: auto;
+      }
+      #hero {
+        padding-top: 80px;
+      }
+      #contact {
+        padding-top: 80px;
+        padding-bottom: 50px;
+        min-height: auto;
+      }
+
+      /* Timeline single-column */
       .achievements-timeline::before {
         left: 20px;
       }
@@ -1565,44 +1723,231 @@
         text-align: left;
       }
       .timeline-item.left .timeline-dot, .timeline-item.right .timeline-dot {
-        left: 10px;
+        left: 9px;
       }
-      .hero-title {
-        font-size: 3.8rem;
+
+      /* Certificate Inspector Mobile Stack */
+      .cert-inspector-deck {
+        flex-direction: column;
+        gap: 18px;
       }
+      .cert-roster-column {
+        flex: none;
+        max-height: 250px;
+        box-shadow: 6px 6px 0 var(--outline);
+      }
+      .cert-inspector-display {
+        flex: none;
+        max-height: none;
+        width: 100%;
+        box-shadow: 6px 6px 0 var(--outline);
+      }
+      .inspector-preview-canvas {
+        min-height: 250px;
+        height: 52vw;
+        max-height: 380px;
+      }
+      .inspector-header-bar {
+        padding: 10px 14px;
+        gap: 10px;
+      }
+      .inspector-active-title {
+        font-size: 0.95rem;
+      }
+      .inspector-footer-bar {
+        padding: 10px 14px;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      /* Neon sign */
       .neon-heading {
-        font-size: 2.7rem;
-        padding: 12px 20px;
+        font-size: clamp(1.6rem, 5vw, 2.8rem);
+        padding: 10px 20px;
+        letter-spacing: 2px;
       }
     }
 
+    /* Small Tablet & Phablet (<= 768px) */
     @media (max-width: 768px) {
-      #mainNav {
-        padding: 0 15px;
-      }
-      .nav-links {
-        gap: 8px;
-      }
-      .nav-links a {
-        padding: 4px 6px;
-        font-size: 0.78rem;
-      }
-      .hero-title {
-        font-size: 2.8rem;
-      }
       .hero-subtitle-box {
-        font-size: 1rem;
+        font-size: 0.98rem;
         padding: 8px 14px;
       }
-
-      .billboard-title-group h3 {
-        font-size: 1.7rem;
+      .skills-unified-grid {
+        padding: 18px 12px;
+        gap: 10px;
+        margin-top: 20px;
+        border-width: 2.5px;
+        box-shadow: 5px 5px 0px var(--outline);
       }
-      .neon-heading {
-        font-size: 2.1rem;
+      .tech-badge {
+        padding: 8px 14px;
+        font-size: 0.88rem;
+        gap: 8px;
+        border-width: 2.5px;
+        box-shadow: 3px 3px 0px var(--outline);
+      }
+      .tech-badge .icon {
+        width: 22px;
+        height: 22px;
       }
       .details-grid {
         grid-template-columns: 1fr;
+      }
+      .direct-email-card {
+        padding: 22px 18px;
+      }
+    }
+
+    /* Mobile Screens (<= 600px) */
+    @media (max-width: 600px) {
+      .hero-about-card {
+        padding: 18px 14px;
+      }
+      .hero-cta-group {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 8px;
+      }
+      .hero-cta-group .bojack-btn {
+        width: 100%;
+        justify-content: center;
+      }
+      .contact-card {
+        padding: 14px 16px;
+        font-size: 0.92rem;
+      }
+      .neon-sign-box {
+        margin: 18px auto;
+      }
+      .direct-email-card h3 {
+        font-size: 1.4rem;
+      }
+    }
+
+    /* Small Mobile Phones (<= 480px) */
+    @media (max-width: 480px) {
+      section {
+        padding: 75px 14px 40px 14px;
+      }
+      .nav-brand {
+        font-size: 1.15rem;
+        gap: 6px;
+        letter-spacing: 0.5px;
+      }
+      .nav-brand .icon {
+        width: 18px;
+        height: 18px;
+      }
+      .mobile-nav-toggle {
+        width: 38px;
+        height: 38px;
+      }
+
+      /* Photo */
+      .profile-photo-container {
+        max-width: 270px;
+      }
+
+      /* Skills */
+      .skills-unified-grid {
+        padding: 14px 8px;
+        gap: 8px;
+      }
+      .tech-badge {
+        padding: 7px 11px;
+        font-size: 0.82rem;
+        gap: 6px;
+      }
+      .tech-badge .icon {
+        width: 18px;
+        height: 18px;
+      }
+
+      /* Projects */
+      .project-card-header {
+        padding: 10px 12px;
+      }
+      .project-card-header-left {
+        font-size: 0.82rem;
+      }
+      .project-card-status-pill {
+        font-size: 0.7rem;
+        padding: 2px 7px;
+      }
+      .project-card-body {
+        padding: 14px 12px;
+      }
+      .project-card-title-row {
+        flex-direction: column;
+        gap: 4px;
+        align-items: flex-start;
+      }
+      .project-card-title {
+        font-size: 1.35rem;
+      }
+      .project-card-bullets {
+        padding-left: 16px;
+        font-size: 0.82rem;
+      }
+      .project-tech-icon {
+        width: 30px;
+        height: 30px;
+      }
+      .project-tech-icon svg {
+        width: 18px;
+        height: 18px;
+      }
+      .project-card-actions {
+        flex-direction: column;
+        gap: 8px;
+      }
+      .project-card-btn {
+        width: 100%;
+        justify-content: center;
+      }
+
+      /* Timeline */
+      .timeline-item {
+        padding-left: 42px;
+        padding-right: 6px;
+      }
+      .timeline-badge {
+        font-size: 0.72rem;
+      }
+      .timeline-box {
+        padding: 16px;
+      }
+
+      /* Inspector */
+      .inspector-header-bar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .inspector-actions-top {
+        width: 100%;
+      }
+      .btn-enlarge-drive {
+        width: 100%;
+        justify-content: center;
+      }
+      .inspector-footer-bar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .inspector-verify-btn {
+        width: 100%;
+        justify-content: center;
+      }
+
+      /* Neon heading */
+      .neon-heading {
+        font-size: clamp(1.3rem, 6vw, 1.8rem);
+        padding: 8px 14px;
+        border-width: 3px;
+        letter-spacing: 1px;
       }
     }
   </style>
@@ -1895,7 +2240,12 @@
       <svg class="icon" viewBox="0 0 24 24"><use href="#icon-terminal"></use></svg>
       SOMYA VISHNOI
     </a>
-    <ul class="nav-links">
+    <button id="mobileNavToggle" class="mobile-nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+      <span class="bar bar-1"></span>
+      <span class="bar bar-2"></span>
+      <span class="bar bar-3"></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
       <li><a href="#hero" class="active"><svg class="icon" viewBox="0 0 24 24"><use href="#icon-trophy"></use></svg> HOME</a></li>
       <li><a href="#about"><svg class="icon" viewBox="0 0 24 24"><use href="#icon-paper"></use></svg> ABOUT</a></li>
       <li><a href="#skills"><svg class="icon" viewBox="0 0 24 24"><use href="#icon-flask"></use></svg> ARSENAL</a></li>
@@ -1925,8 +2275,8 @@
 
           <!-- Right Column: Hero Intro & About Me -->
           <div class="about-card hero-about-card">
-            <div class="hero-title-box" style="text-align: left; margin-bottom: 12px;">
-              <h1 class="hero-title" id="heroTitle" style="justify-content: flex-start; font-size: 4.2rem;">SOMYA VISHNOI</h1>
+            <div class="hero-title-box" style="margin-bottom: 12px;">
+              <h1 class="hero-title" id="heroTitle">SOMYA VISHNOI</h1>
             </div>
 
             <div class="hero-subtitle-box" style="margin-bottom: 20px;">
@@ -1942,7 +2292,7 @@
               <p>Passionate about scalable data pipelines, machine learning algorithms, and high-impact analytics.</p>
             </div>
 
-            <div class="details-grid" style="margin-top: 20px; grid-template-columns: 1fr 1fr;">
+            <div class="details-grid" style="margin-top: 20px;">
               <div class="detail-item">
                 <svg class="icon" viewBox="0 0 24 24"><use href="#icon-laptop"></use></svg>
                 <span>Python · SQL · Power BI · ML</span>
@@ -1953,7 +2303,7 @@
               </div>
             </div>
 
-            <div class="hero-cta-group" style="justify-content: flex-start; margin-top: 24px; margin-bottom: 0;">
+            <div class="hero-cta-group" style="margin-top: 24px; margin-bottom: 0;">
               <a href="#projects" class="bojack-btn primary">
                 <svg class="icon" viewBox="0 0 24 24"><use href="#icon-laptop"></use></svg>
                 VIEW PROJECTS
@@ -3464,7 +3814,55 @@
       }, 50);
     });
 
-    console.log("Somya Vishnoi Portfolio updated successfully with walking reference Bojack, CV badges, drive buttons, and direct email interface.");
+    /* ==========================================================================
+       RESPONSIVE MOBILE NAVIGATION CONTROLLER
+       ========================================================================== */
+    const mobileNavToggle = document.getElementById('mobileNavToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    if (mobileNavToggle && navLinks) {
+      // Toggle menu on click
+      mobileNavToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = navLinks.classList.toggle('open');
+        mobileNavToggle.classList.toggle('open', isOpen);
+        mobileNavToggle.setAttribute('aria-expanded', isOpen);
+      });
+
+      // Auto-close when clicking any link
+      navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          navLinks.classList.remove('open');
+          mobileNavToggle.classList.remove('open');
+          mobileNavToggle.setAttribute('aria-expanded', 'false');
+        });
+      });
+
+      // Close menu when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!mobileNavToggle.contains(e.target) && !navLinks.contains(e.target)) {
+          navLinks.classList.remove('open');
+          mobileNavToggle.classList.remove('open');
+          mobileNavToggle.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
+
+    // Refresh ScrollTrigger and resize handlers on orientation change / resize
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 860 && navLinks && navLinks.classList.contains('open')) {
+        navLinks.classList.remove('open');
+        if (mobileNavToggle) {
+          mobileNavToggle.classList.remove('open');
+          mobileNavToggle.setAttribute('aria-expanded', 'false');
+        }
+      }
+      if (typeof ScrollTrigger !== 'undefined') {
+        ScrollTrigger.refresh();
+      }
+    });
+
+    console.log("Somya Vishnoi Portfolio responsive engine active with mobile hamburger navigation and fluid breakpoints.");
   </script>
 </body>
 </html>
